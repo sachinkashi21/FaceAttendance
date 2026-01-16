@@ -1,0 +1,17 @@
+# Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv/
+
+# IDE / OS
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Data files
+attendance.csv
+embeddings.npy

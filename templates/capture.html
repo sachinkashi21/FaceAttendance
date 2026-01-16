@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanner | FaceAttendance AI</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/capture.css') }}">
+</head>
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
+                <i data-lucide="shield-check" class="text-primary me-2"></i>
+                <span><span class="text-primary">Face</span>Attendance</span>
+            </a>
+            <div class="ms-auto">
+                <a href="/" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                    <i data-lucide="arrow-left" class="me-1" style="width:14px;"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 text-center">
+                <h2 class="fw-bold mb-2">Capturing Facial Feature</h2>
+                <p class="text-muted mb-4">Position your face within the frame and ensure good lighting.</p>
+                
+                <div class="scanner-wrapper shadow-lg">
+                    <div class="scan-frame"></div>
+                    <div class="scan-line"></div>
+                    
+                    <video id="video" autoplay playsinline></video>
+                    <canvas id="canvas" style="display:none;"></canvas>
+                    
+                    <div id="captured-overlay" class="d-none">
+                        <div class="status-badge bg-success text-white">
+                            <i data-lucide="check-circle" class="me-2"></i> Image Captured
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button id="captureBtn" onclick="capture()" class="btn btn-primary btn-lg rounded-pill px-5 shadow">
+                        <i data-lucide="camera" class="me-2"></i> Capture Image
+                    </button>
+
+                    <form id="sendForm" method="post" action="/recognize" class="d-inline">
+                        <input type="hidden" name="image" id="imageInput">
+                        <button type="submit" id="sendBtn" class="btn btn-success btn-lg rounded-pill px-5 d-none">
+                            <span id="btnText">Verify Identity</span>
+                            <div id="spinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status"></div>
+                        </button>
+                    </form>
+                    
+                    <button id="retryBtn" onclick="location.reload()" class="btn btn-link text-muted mt-3 d-block mx-auto d-none">
+                        Retake Photo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById("video");
+        const canvas = document.getElementById("canvas");
+        const imageInput = document.getElementById("imageInput");
+        const sendBtn = document.getElementById("sendBtn");
+        const captureBtn = document.getElementById("captureBtn");
+        const retryBtn = document.getElementById("retryBtn");
+        const overlay = document.getElementById("captured-overlay");
+        const form = document.getElementById("sendForm");
+
+        // Start webcam
+        navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } })
+            .then(stream => { video.srcObject = stream; })
+            .catch(err => {
+                alert("Camera access denied. Please enable camera permissions.");
+            });
+
+        function capture() {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const imageData = canvas.toDataURL("image/jpeg");
+            imageInput.value = imageData;
+
+            // UI Changes
+            video.classList.add("blur-effect");
+            captureBtn.classList.add("d-none");
+            sendBtn.classList.remove("d-none");
+            retryBtn.classList.remove("d-none");
+            overlay.classList.remove("d-none");
+        }
+
+        form.onsubmit = () => {
+            document.getElementById("btnText").innerText = "Verifying...";
+            document.getElementById("spinner").classList.remove("d-none");
+            sendBtn.disabled = true;
+        };
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>

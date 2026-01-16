@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Records | FaceAttendance AI</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/attendance.css') }}">
+</head>
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
+                <i data-lucide="shield-check" class="text-primary me-2"></i>
+                <span><span class="text-primary">Face</span>Attendance</span>
+            </a>
+            <div class="ms-auto">
+                <a href="/" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                    <i data-lucide="home" class="me-1" style="width:14px;"></i> Home
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="d-md-flex align-items-center justify-content-between mb-4">
+            <div>
+                <h2 class="fw-bold mb-1">Attendance Summary</h2>
+                <p class="text-muted small">Detailed logs and historical data</p>
+            </div>
+            
+            <form method="post" class="btn-group shadow-sm rounded-pill overflow-hidden">
+                <button name="filter" value="day" class="btn btn-white btn-sm px-3 border">Today</button>
+                <button name="filter" value="week" class="btn btn-white btn-sm px-3 border">Week</button>
+                <button name="filter" value="month" class="btn btn-white btn-sm px-3 border">Month</button>
+                <button name="filter" value="year" class="btn btn-white btn-sm px-3 border">Year</button>
+            </form>
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-4 mb-4">
+            <div class="card-body p-3">
+                <form method="post" class="row g-3 align-items-end">
+                    <input type="hidden" name="filter" value="custom">
+                    <div class="col-md-4">
+                        <label class="form-label small fw-bold text-muted">From</label>
+                        <input type="datetime-local" name="start" class="form-control rounded-3" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small fw-bold text-muted">To</label>
+                        <input type="datetime-local" name="end" class="form-control rounded-3" required>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary w-100 rounded-3">Apply Range</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4">Name</th>
+                            <th class="text-center">Total Check-ins</th>
+                            <th class="text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for name, timestamps in summary.items() %}
+                        <tr class="user-row" onclick="toggleCollapse('{{ name|replace(' ', '_') }}')">
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-sm me-3 bg-soft-primary text-primary">
+                                        {{ name[0] }}
+                                    </div>
+                                    <span class="fw-semibold text-dark">{{ name }}</span>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge rounded-pill bg-soft-success text-success px-3">
+                                    {{ timestamps|length }} Logs
+                                </span>
+                            </td>
+                            <td class="text-end pe-4">
+                                <i data-lucide="chevron-down" class="text-muted chevron-icon" id="icon-{{ name|replace(' ', '_') }}"></i>
+                            </td>
+                        </tr>
+                        <tr id="{{ name|replace(' ', '_') }}" class="collapse-content">
+                            <td colspan="3" class="bg-light-subtle p-0">
+                                <div class="p-4 border-top border-bottom">
+                                    <h6 class="small fw-bold text-muted text-uppercase mb-3">Timeline</h6>
+                                    <div class="timeline-wrapper">
+                                        {% for ts in timestamps %}
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i data-lucide="clock" class="text-primary me-2" style="width: 14px;"></i>
+                                            <span class="small text-dark">{{ ts.strftime('%B %d, %Y, Time: %H:%M:%S') }}</span>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                        {% if summary|length == 0 %}
+                        <tr>
+                            <td colspan="3" class="text-center py-5 text-muted">
+                                <i data-lucide="database" class="mb-2" style="width: 48px; opacity: 0.5;"></i>
+                                <p>No records found for the selected period.</p>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleCollapse(id) {
+            const row = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            if(row.style.display === "table-row") {
+                row.style.display = "none";
+                icon.style.transform = "rotate(0deg)";
+            } else {
+                row.style.display = "table-row";
+                icon.style.transform = "rotate(180deg)";
+            }
+        }
+        lucide.createIcons();
+    </script>
+</body>
+</html>

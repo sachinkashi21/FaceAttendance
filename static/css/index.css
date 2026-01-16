@@ -1,0 +1,63 @@
+:root {
+    --primary-color: #0d6efd;
+    --success-color: #198754;
+    --bg-light: #f8fbff;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-light);
+    color: #2d3436;
+}
+
+/* Navbar Tweaks */
+.navbar {
+    padding: 1rem 0;
+}
+
+.bg-soft-primary {
+    background-color: rgba(13, 110, 253, 0.1);
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+/* Dashboard Cards */
+.action-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 20px;
+}
+
+.action-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08) !important;
+}
+
+.icon-wrapper {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-wrapper i {
+    width: 32px;
+    height: 32px;
+}
+
+.bg-primary-light { background-color: rgba(13, 110, 253, 0.1); }
+.bg-success-light { background-color: rgba(25, 135, 84, 0.1); }
+
+/* Buttons */
+.btn-primary {
+    padding: 10px 25px;
+    font-weight: 600;
+}
+
+.admin-notice-box {
+    border-left: 4px solid #ffc107 !important;
+}

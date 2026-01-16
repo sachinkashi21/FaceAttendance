@@ -1,0 +1,55 @@
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #f8fbff;
+}
+
+/* Success Card Styling */
+.recognition-header {
+    letter-spacing: 1px;
+    background: linear-gradient(90deg, #198754 0%, #20c997 100%);
+}
+
+.result-image-container {
+    position: relative;
+    display: inline-block;
+    max-width: 280px;
+    border: 4px solid #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.scan-overlay-static {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border: 2px solid rgba(25, 135, 84, 0.4);
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+/* Error Styling */
+.bg-light-danger {
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+.icon-box {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Layout Helpers */
+.ls-1 { letter-spacing: 1.5px; }
+
+.btn-success {
+    background: linear-gradient(135deg, #198754 0%, #157347 100%);
+    border: none;
+    font-weight: 600;
+}
+
+.btn-outline-danger {
+    font-weight: 600;
+    border-width: 2px;
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<h2>Mark Attendance</h2>
+
+<form method="post">
+    <input type="hidden" name="action" value="capture">
+    <button type="submit">Capture Image</button>
+</form>
+
+{% if captured_image %}
+    <h3>Captured Image</h3>
+    <img src="data:image/jpeg;base64,{{ captured_image }}" width="400">
+
+    <form method="post">
+        <input type="hidden" name="action" value="recognize">
+        <button type="submit">Recognize</button>
+    </form>
+{% endif %}
+
+{% if result_image %}
+    <h3>Recognition Result</h3>
+    <img src="data:image/jpeg;base64,{{ result_image }}" width="400">
+    <p>Detected: <b>{{ detected_name }}</b></p>
+
+    <form method="post" action="/confirm_attendance">
+        <input type="hidden" name="name" value="{{ detected_name }}">
+        <button type="submit">Confirm Attendance</button>
+    </form>
+{% endif %}
+
+{% if error %}
+    <p style="color:red">{{ error }}</p>
+{% endif %}
+
+</body>
+</html>

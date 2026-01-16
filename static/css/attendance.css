@@ -1,0 +1,63 @@
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.bg-white { background-color: #ffffff !important; }
+
+/* Table Styling */
+.table thead th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 1rem;
+    border-bottom: none;
+}
+
+.user-row {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.user-row:hover {
+    background-color: #f8fbff !important;
+}
+
+/* Avatar Placeholder */
+.avatar-sm {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.bg-soft-primary { background-color: rgba(13, 110, 253, 0.1); }
+.bg-soft-success { background-color: rgba(25, 135, 84, 0.1); }
+
+/* Collapse Logic */
+.collapse-content {
+    display: none;
+    transition: all 0.3s ease;
+}
+
+.chevron-icon {
+    transition: transform 0.3s ease;
+}
+
+/* Form Inputs */
+.btn-white {
+    background: white;
+    color: #444;
+}
+
+.btn-white:hover {
+    background: #f8f9fa;
+}
+
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+}
